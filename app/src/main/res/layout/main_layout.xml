@@ -1,19 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
+    <!-- Górny obszar -->
     <LinearLayout
         android:id="@+id/topLayout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="58dp"
         android:background="#323131"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
+        android:orientation="vertical">
+        <!-- Tytuł -->
         <TextView
             android:id="@+id/zdjecie_text_id"
             android:layout_width="match_parent"
@@ -28,55 +26,43 @@
             android:typeface="monospace" />
     </LinearLayout>
 
+    <!-- Środkowy obszar -->
     <LinearLayout
         android:id="@+id/middleLayout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#EB181B23"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/topLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/bottomLayout">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/image_id"
-            android:contentDescription="asd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon" />
-
-        <LinearLayout
+        <!-- RecyclerView na daty -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dateRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:background="#EB181B23"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:padding="8dp"
+            android:clipToPadding="false"/>
 
-            <Button
-                android:id="@+id/bPrev_id"
-                android:layout_width="194dp"
-                android:layout_height="wrap_content"
-                android:text="prev" />
-
-            <Button
-                android:id="@+id/bNext_id"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="next" />
-        </LinearLayout>
-
+        <!-- RecyclerView na zdjęcia -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/imageRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#EB181B23"
+            android:layout_weight="1"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
     </LinearLayout>
 
+    <!-- Dolny obszar -->
     <LinearLayout
         android:id="@+id/bottomLayout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#323131"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/middleLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:orientation="horizontal">
 
+        <!-- Przyciski -->
         <Button
             android:id="@+id/photos_button_id"
             style="@android:style/DeviceDefault.Light.ButtonBar.AlertDialog"
@@ -119,4 +105,4 @@
             android:textStyle="bold"
             android:typeface="monospace" />
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
