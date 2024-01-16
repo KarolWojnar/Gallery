@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <!-- Górny obszar -->
@@ -34,24 +35,16 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <!-- RecyclerView na daty -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dateRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="#EB181B23"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:clipToPadding="false"
             android:padding="8dp"
-            android:clipToPadding="false"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <!-- RecyclerView na zdjęcia -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/imageRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="#EB181B23"
-            android:layout_weight="1"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
     </LinearLayout>
 
     <!-- Dolny obszar -->
@@ -92,14 +85,14 @@
             android:typeface="monospace" />
 
         <Button
-            android:id="@+id/manage_id"
+            android:id="@+id/aparat_id"
             style="@android:style/DeviceDefault.ButtonBar.AlertDialog"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="serif"
             android:lineSpacingExtra="8sp"
-            android:text="Zarządzaj"
+            android:text="Aparat"
             android:textColor="#CCCCCC"
             android:textSize="20sp"
             android:textStyle="bold"

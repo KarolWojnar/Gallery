@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Gallery</string>
+    <string name="fingerPrintBtn">Odcisk palca</string>
+    <string name="passwordBtn">Zaloguj</string>
 </resources>

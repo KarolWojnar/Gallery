@@ -1,14 +1,23 @@
 package com.example.gallery
 
 import ImageAdapter
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.widget.Button
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.database.getStringOrNull
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import java.text.SimpleDateFormat
-import java.util.*
 
 class MainActivity : ComponentActivity() {
 
@@ -17,30 +26,88 @@ class MainActivity : ComponentActivity() {
         MediaStore.Images.Media.DATA,
         MediaStore.Images.Media.DATE_TAKEN
     )
+    private val CHANNEL_ID = "MyNotificationChannel"
+    private val NOTIFICATION_ID = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_layout)
 
-        val dateRecyclerView = findViewById<RecyclerView>(R.id.dateRecyclerView)
-        val imageRecyclerView = findViewById<RecyclerView>(R.id.imageRecyclerView)
-        val imagesList: List<ImageData> = getAllImagesData()
+        sendNotification()
 
-        // Konwertuj listę ImageData na mapę, gdzie kluczem jest data w formacie "dd.MM.yyyy"
-        val imagesMap = imagesList.groupBy {
-            SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(Date(it.imageDate))
+        val aparatButton = findViewById<Button>(R.id.aparat_id)
+        aparatButton.setOnClickListener {
+            openCamera()
         }
+
+        val privateButton = findViewById<Button>(R.id.private_button_id)
+        privateButton.setOnClickListener {
+            val intent = Intent(this, SecurityActivity::class.java)
+            startActivity(intent)
+        }
+
+
+        val recyclerView = findViewById<RecyclerView>(R.id.dateRecyclerView)
+        val imagesList: List<ImageData> = getAllImagesData()
 
         val displayMetrics = resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
         val imageSizePercentage = 0.2
         val imageWidth = (screenWidth * imageSizePercentage).toInt()
 
-        // Dodaj marginesy w pikselach
         val margin = (displayMetrics.density * 4).toInt()
+        recyclerView.adapter = ImageAdapter(imagesList, imageWidth, margin)
+    }
 
-        // Przekazujesz teraz imagesMap do ImageAdapter
-        imageRecyclerView.adapter = ImageAdapter(imagesMap, imageWidth, margin)
+    private fun sendNotification() {
+        createNotificationChannel()
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle("Cześć")
+            .setContentText("Witaj w aplikacji Galerii!")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        with(NotificationManagerCompat.from(this)) {
+            if (ActivityCompat.checkSelfPermission(
+                    applicationContext,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return
+            }
+            notify(NOTIFICATION_ID, builder.build())
+        }
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "My Notification Channel"
+            val descriptionText = "Channel for app notifications"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun openCamera() {
+        val cameraIntent = Intent(android.provider.MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA)
+        if (cameraIntent.resolveActivity(packageManager) != null) {
+            startActivity(cameraIntent)
+        } else {
+            Toast.makeText(this, "Brak aplikacji aparatu", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun getAllImagesData(): List<ImageData> {

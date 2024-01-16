@@ -4,11 +4,5 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ImageView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp" />
-
+    <!-- Dodaj tu elementy UI związane z pojedynczym obrazem -->
 </LinearLayout>

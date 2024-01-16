@@ -1,13 +1,11 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:ignore="ExtraText">
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/dateHeaderText"
+        android:id="@+id/dateText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -15,11 +13,11 @@
         android:textColor="#FFFFFF"
         android:textSize="20sp" />
 
-    <!-- Dodajemy kontener dla obrazów -->
-    <LinearLayout
-        android:id="@+id/imageContainer"
+    <GridLayout
+        android:id="@+id/imagesContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp"/>
+        android:columnCount="4"
+        android:orientation="horizontal" />
+
 </LinearLayout>
