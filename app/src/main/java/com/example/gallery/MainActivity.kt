@@ -26,6 +26,12 @@ class MainActivity : ComponentActivity() {
         MediaStore.Images.Media.DATA,
         MediaStore.Images.Media.DATE_TAKEN
     )
+
+    private val VIDEO_PROJECTION = arrayOf(
+        MediaStore.Video.Media._ID,
+        MediaStore.Video.Media.DATA,
+        MediaStore.Video.Media.DATE_TAKEN
+    )
     private val CHANNEL_ID = "MyNotificationChannel"
     private val NOTIFICATION_ID = 1
 
@@ -49,6 +55,7 @@ class MainActivity : ComponentActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.dateRecyclerView)
         val imagesList: List<ImageData> = getAllImagesData()
+        val videosList: List<VideoData> = getAllVideosData()
 
         val displayMetrics = resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
@@ -56,7 +63,7 @@ class MainActivity : ComponentActivity() {
         val imageWidth = (screenWidth * imageSizePercentage).toInt()
 
         val margin = (displayMetrics.density * 4).toInt()
-        recyclerView.adapter = ImageAdapter(imagesList, imageWidth, margin)
+        recyclerView.adapter = ImageAdapter(imagesList, videosList, imageWidth, margin)
     }
 
     private fun sendNotification() {
@@ -73,13 +80,6 @@ class MainActivity : ComponentActivity() {
                     Manifest.permission.POST_NOTIFICATIONS
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
                 return
             }
             notify(NOTIFICATION_ID, builder.build())
@@ -102,7 +102,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun openCamera() {
-        val cameraIntent = Intent(android.provider.MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA)
+        val cameraIntent = Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA)
         if (cameraIntent.resolveActivity(packageManager) != null) {
             startActivity(cameraIntent)
         } else {
@@ -137,6 +137,33 @@ class MainActivity : ComponentActivity() {
 
         cursor?.close()
 
+        return fileList
+    }
+    private fun getAllVideosData(): List<VideoData> {
+        val fileList: ArrayList<VideoData> = ArrayList()
+
+        val cursor = contentResolver.query(
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+            VIDEO_PROJECTION,
+            null,
+            null,
+            "${MediaStore.Video.Media.DATE_TAKEN} DESC"
+        )
+
+        cursor?.use {
+            val columnIndexData = it.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
+            val columnIndexDate = it.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_TAKEN)
+
+            while (it.moveToNext()) {
+                val videoPath = it.getStringOrNull(columnIndexData)
+                val videoDate = it.getLong(columnIndexDate)
+
+                if (videoPath != null) {
+                    fileList.add(VideoData(videoPath, videoDate))
+                }
+            }
+        }
+        cursor?.close()
         return fileList
     }
 }

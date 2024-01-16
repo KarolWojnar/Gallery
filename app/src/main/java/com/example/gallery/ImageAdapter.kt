@@ -1,3 +1,4 @@
+import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -6,12 +7,15 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gallery.ImageData
+
 import com.example.gallery.R
+import com.example.gallery.VideoData
 import java.text.SimpleDateFormat
 import java.util.*
 
 class ImageAdapter(
     private val imagesList: List<ImageData>,
+    private val videosList: List<VideoData>,
     private val margin: Int,
     private val imageWidth: Int
 ) : RecyclerView.Adapter<ImageAdapter.DateViewHolder>() {
@@ -31,7 +35,7 @@ class ImageAdapter(
 
 
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
-        val currentDate = findUniqueDates(imagesList)[position]
+        val currentDate = findUniqueDates(imagesList, videosList)[position]
         val paths = findPathsByDate(currentDate)
 
         holder.imagesContainer.removeAllViews()
@@ -43,19 +47,32 @@ class ImageAdapter(
     }
 
     override fun getItemCount(): Int {
-        return findUniqueDates(imagesList).size
+        return findUniqueDates(imagesList, videosList).size
     }
 
     private fun findPathsByDate(date: String): List<String> {
-        return imagesList
+        val imagePaths = imagesList
             .filter { image -> formatDate(image.imageDate) == date }
             .map { image -> image.imagePath }
+
+        val videoPaths = videosList
+            .filter { video -> formatDate(video.videoDate) == date }
+            .map { video -> video.videoPath }
+
+        return imagePaths + videoPaths
     }
 
-    private fun findUniqueDates(imagesList: List<ImageData>): List<String> {
+
+    private fun findUniqueDates(imagesList: List<ImageData>, videosList: List<VideoData>): List<String> {
         val uniqueDatesList = mutableListOf<String>()
         for (imageData in imagesList) {
             val formattedDate = formatDate(imageData.imageDate)
+            if (!uniqueDatesList.contains(formattedDate)) {
+                uniqueDatesList.add(formattedDate)
+            }
+        }
+        for (videoData in videosList) {
+            val formattedDate = formatDate(videoData.videoDate)
             if (!uniqueDatesList.contains(formattedDate)) {
                 uniqueDatesList.add(formattedDate)
             }

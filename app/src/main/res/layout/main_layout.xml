@@ -43,8 +43,6 @@
             android:clipToPadding="false"
             android:padding="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-        <!-- RecyclerView na zdjęcia -->
     </LinearLayout>
 
     <!-- Dolny obszar -->
