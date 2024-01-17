@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_layout)
 
-        sendNotification()
+
 
         val aparatButton = findViewById<Button>(R.id.aparat_id)
         aparatButton.setOnClickListener {
@@ -86,6 +86,8 @@ class MainActivity : ComponentActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.dateRecyclerView)
         val imagesList: List<ImageData> = getAllImagesData()
         val videosList: List<VideoData> = getAllVideosData()
+
+        sendNotification(imagesList, videosList)
 
         val displayMetrics = resources.displayMetrics
         val screenWidth = displayMetrics.widthPixels
@@ -110,12 +112,20 @@ class MainActivity : ComponentActivity() {
         })
     }
 
-    private fun sendNotification() {
+    private fun sendNotification(imagesList: List<ImageData>, videosList: List<VideoData>) {
         createNotificationChannel()
+
+        val totalImages = imagesList.size
+        val totalVideos = videosList.size
+        val totalMedia = totalImages + totalVideos
+
+        val notificationText = "Liczba zdjęć: $totalImages, Liczba wideo: $totalVideos, Razem: $totalMedia"
+
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("Cześć")
-            .setContentText("Witaj w aplikacji Galerii!")
+            .setContentText(notificationText)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(notificationText))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         with(NotificationManagerCompat.from(this)) {
