@@ -174,14 +174,14 @@ class MainActivity : ComponentActivity() {
                 val imageDate = it.getLong(columnIndexDate)
 
                 if (imagePath != null) {
-                    fileList.add(ImageData(imagePath, imageDate))
+                    fileList.add(ImageData(imagePath, imageDate, false))
                 }
             }
         }
 
         cursor?.close()
 
-        return fileList
+        return fileList.filter { !it.imageIsPrivate }
     }
     private fun getAllVideosData(): List<VideoData> {
         val fileList: ArrayList<VideoData> = ArrayList()
@@ -203,11 +203,11 @@ class MainActivity : ComponentActivity() {
                 val videoDate = it.getLong(columnIndexDate)
 
                 if (videoPath != null) {
-                    fileList.add(VideoData(videoPath, videoDate))
+                    fileList.add(VideoData(videoPath, videoDate, false))
                 }
             }
         }
         cursor?.close()
-        return fileList
+        return fileList.filter { !it.videoIsPrivate }
     }
 }

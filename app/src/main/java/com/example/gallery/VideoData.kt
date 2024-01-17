@@ -2,5 +2,6 @@ package com.example.gallery
 
 class VideoData(
     val videoPath: String,
-    val videoDate: Long
-) : MediaData(videoPath, videoDate)
+    val videoDate: Long,
+    val videoIsPrivate: Boolean = false
+) : MediaData(videoPath, videoDate, videoIsPrivate)

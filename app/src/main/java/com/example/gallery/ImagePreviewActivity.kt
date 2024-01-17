@@ -1,12 +1,15 @@
 package com.example.gallery
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
+import java.io.File
 
 class ImagePreviewActivity : AppCompatActivity() {
 
@@ -38,6 +41,7 @@ class ImagePreviewActivity : AppCompatActivity() {
             videoView.start()
         }
 
+        //TODO: ZROBIĆ PAUZOWANIE
 
         // Obsługa przycisków
         backButton.setOnClickListener {
@@ -45,12 +49,28 @@ class ImagePreviewActivity : AppCompatActivity() {
         }
 
         deleteButton.setOnClickListener {
-            // Implementacja usuwania zdjęcia
-            // Możesz użyć imagePath do zlokalizowania pliku i go usunąć
+            val mediaPath = imagePath ?: videoPath
+            if (mediaPath != null) {
+                val mediaFile = File(mediaPath)
+                if (mediaFile.exists()) {
+                    val deleted = mediaFile.delete()
+                    if (deleted) {
+                        sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(mediaFile)))
+                        startActivity(Intent(this, MainActivity::class.java))
+                    } else {
+                        Toast.makeText(this, "Błąd podczas usuwania pliku", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this, "Plik nie istnieje", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         addToPrivateButton.setOnClickListener {
-            // Implementacja dodawania do prywatnych
+            val mediaPath = imagePath ?: videoPath
+            if (mediaPath != null) {
+                //moveMediaToPrivate(mediaPath)
+            }
         }
     }
 }

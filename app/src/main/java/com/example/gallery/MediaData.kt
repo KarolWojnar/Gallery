@@ -2,5 +2,6 @@ package com.example.gallery
 
 open class MediaData (
     val path: String,
-    val date: Long
+    val date: Long,
+    val isPrivate: Boolean
 )
