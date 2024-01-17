@@ -35,6 +35,36 @@ class MainActivity : ComponentActivity() {
     private val CHANNEL_ID = "MyNotificationChannel"
     private val NOTIFICATION_ID = 1
 
+
+    override fun onResume() {
+        super.onResume()
+        val recyclerView = findViewById<RecyclerView>(R.id.dateRecyclerView)
+        val imagesList: List<ImageData> = getAllImagesData()
+        val videosList: List<VideoData> = getAllVideosData()
+
+        val displayMetrics = resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        val imageSizePercentage = 0.2
+        val imageWidth = (screenWidth * imageSizePercentage).toInt()
+
+        val margin = (displayMetrics.density * 4).toInt()
+
+
+        val imageAdapter = ImageAdapter(imagesList, videosList, imageWidth, margin)
+        recyclerView.adapter = imageAdapter
+        imageAdapter.setOnItemClickListener(object : ImageAdapter.OnItemClickListener {
+            override fun onItemClick(mediaData: MediaData) {
+                val intent = Intent(this@MainActivity, ImagePreviewActivity::class.java)
+
+                if (mediaData is ImageData) {
+                    intent.putExtra("imagePath", mediaData.imagePath)
+                } else if (mediaData is VideoData) {
+                    intent.putExtra("videoPath", mediaData.videoPath)
+                }
+                startActivity(intent)
+            }
+        })
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_layout)
@@ -61,18 +91,20 @@ class MainActivity : ComponentActivity() {
         val screenWidth = displayMetrics.widthPixels
         val imageSizePercentage = 0.2
         val imageWidth = (screenWidth * imageSizePercentage).toInt()
-
         val margin = (displayMetrics.density * 4).toInt()
-        recyclerView.adapter = ImageAdapter(imagesList, videosList, imageWidth, margin)
-
 
         val imageAdapter = ImageAdapter(imagesList, videosList, imageWidth, margin)
         recyclerView.adapter = imageAdapter
+
         imageAdapter.setOnItemClickListener(object : ImageAdapter.OnItemClickListener {
-            override fun onItemClick(imageData: ImageData) {
-                // Otwarcie ImagePreviewActivity po kliknięciu na obraz
+            override fun onItemClick(mediaData: MediaData) {
                 val intent = Intent(this@MainActivity, ImagePreviewActivity::class.java)
-                intent.putExtra("imagePath", imageData.imagePath)
+
+                if (mediaData is ImageData) {
+                    intent.putExtra("imagePath", mediaData.imagePath)
+                } else if (mediaData is VideoData) {
+                    intent.putExtra("videoPath", mediaData.videoPath)
+                }
                 startActivity(intent)
             }
         })

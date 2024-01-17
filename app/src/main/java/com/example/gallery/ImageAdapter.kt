@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gallery.ImageData
+import com.example.gallery.MediaData
 
 import com.example.gallery.R
 import com.example.gallery.VideoData
@@ -38,7 +39,7 @@ class ImageAdapter(
 
     // Interfejs do nasłuchiwania zdarzeń kliknięć
     interface OnItemClickListener {
-        fun onItemClick(imageData: ImageData)
+        fun onItemClick(mediaData: MediaData)
     }
 
     // Zmienna przechowująca nasłuchiwacz
@@ -62,8 +63,8 @@ class ImageAdapter(
 
 
         customDateView.setOnItemClickListener(object : CustomDateView.OnItemClickListener {
-            override fun onItemClick(imageData: ImageData) {
-                onItemClickListener?.onItemClick(imageData)
+            override fun onItemClick(mediaData: MediaData) {
+                onItemClickListener?.onItemClick(mediaData)
             }
         })
 

@@ -15,7 +15,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.gallery.ImageData
+import com.example.gallery.MediaData
 import com.example.gallery.R
+import com.example.gallery.VideoData
 
 class CustomDateView(context: Context, attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
 
@@ -32,7 +34,7 @@ class CustomDateView(context: Context, attrs: AttributeSet? = null) : LinearLayo
 
     // Interfejs do nasłuchiwania zdarzeń kliknięć w CustomDateView
     interface OnItemClickListener {
-        fun onItemClick(imageData: ImageData)
+        fun onItemClick(mediaData: MediaData)
     }
 
     private var onItemClickListener: OnItemClickListener? = null
@@ -41,8 +43,8 @@ class CustomDateView(context: Context, attrs: AttributeSet? = null) : LinearLayo
         this.onItemClickListener = listener
     }
 
-    private fun showImagePreview(imageData: ImageData) {
-        onItemClickListener?.onItemClick(imageData)
+    private fun showImagePreview(mediaData: MediaData) {
+        onItemClickListener?.onItemClick(mediaData)
     }
 
     fun setDateAndImages(date: String, imagePaths: List<String>, imageWidth: Int) {
@@ -84,6 +86,10 @@ class CustomDateView(context: Context, attrs: AttributeSet? = null) : LinearLayo
 
                 imageView.setImageBitmap(triangleBitmap)
                 imagesContainer.addView(imageView)
+
+                imageView.setOnClickListener {
+                    showImagePreview(VideoData(path, 0))
+                }
             }
         }
     }

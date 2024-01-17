@@ -1,6 +1,6 @@
 package com.example.gallery
 
-data class ImageData(
+class ImageData(
     val imagePath: String,
     val imageDate: Long
-)
+) : MediaData(imagePath, imageDate)

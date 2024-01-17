@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -30,13 +31,20 @@
     <ImageView
         android:id="@+id/imagePreview"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="621dp"
         android:layout_weight="1"
-        android:scaleType="fitCenter"
         android:background="#EB181B23"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:scaleType="fitCenter" />
 
-    <!-- Dolny obszar -->
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="621dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:scaleType="fitCenter" />
+
     <LinearLayout
         android:id="@+id/bottomLayout"
         android:layout_width="match_parent"
