@@ -64,6 +64,18 @@ class MainActivity : ComponentActivity() {
 
         val margin = (displayMetrics.density * 4).toInt()
         recyclerView.adapter = ImageAdapter(imagesList, videosList, imageWidth, margin)
+
+
+        val imageAdapter = ImageAdapter(imagesList, videosList, imageWidth, margin)
+        recyclerView.adapter = imageAdapter
+        imageAdapter.setOnItemClickListener(object : ImageAdapter.OnItemClickListener {
+            override fun onItemClick(imageData: ImageData) {
+                // Otwarcie ImagePreviewActivity po kliknięciu na obraz
+                val intent = Intent(this@MainActivity, ImagePreviewActivity::class.java)
+                intent.putExtra("imagePath", imageData.imagePath)
+                startActivity(intent)
+            }
+        })
     }
 
     private fun sendNotification() {

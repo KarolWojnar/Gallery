@@ -14,6 +14,7 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.example.gallery.ImageData
 import com.example.gallery.R
 
 class CustomDateView(context: Context, attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
@@ -25,6 +26,23 @@ class CustomDateView(context: Context, attrs: AttributeSet? = null) : LinearLayo
         LayoutInflater.from(context).inflate(R.layout.date_item, this, true)
         dateText = findViewById(R.id.dateText)
         imagesContainer = findViewById(R.id.imagesContainer)
+    }
+
+
+
+    // Interfejs do nasłuchiwania zdarzeń kliknięć w CustomDateView
+    interface OnItemClickListener {
+        fun onItemClick(imageData: ImageData)
+    }
+
+    private var onItemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.onItemClickListener = listener
+    }
+
+    private fun showImagePreview(imageData: ImageData) {
+        onItemClickListener?.onItemClick(imageData)
     }
 
     fun setDateAndImages(date: String, imagePaths: List<String>, imageWidth: Int) {
@@ -43,6 +61,10 @@ class CustomDateView(context: Context, attrs: AttributeSet? = null) : LinearLayo
                 layoutParams.setMargins(margin, margin, margin, margin)
                 imageView.layoutParams = layoutParams
                 imagesContainer.addView(imageView)
+                imageView.setOnClickListener {
+                    // Po kliknięciu na obraz przekazujemy informacje do nasłuchiwacza
+                    showImagePreview(ImageData(path, 0)) // Uwaga: Brak daty w tym przykładzie
+                }
             }
             else if (path.endsWith(".mp4")) {
                 val imageView = ImageView(context)

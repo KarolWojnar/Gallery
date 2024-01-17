@@ -3,6 +3,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,22 @@ class ImageAdapter(
 
 
 
+
+    // Interfejs do nasłuchiwania zdarzeń kliknięć
+    interface OnItemClickListener {
+        fun onItemClick(imageData: ImageData)
+    }
+
+    // Zmienna przechowująca nasłuchiwacz
+    private var onItemClickListener: OnItemClickListener? = null
+
+    // Metoda ustawiająca nasłuchiwacz
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.onItemClickListener = listener
+    }
+
+
+
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
         val currentDate = findUniqueDates(imagesList, videosList)[position]
         val paths = findPathsByDate(currentDate)
@@ -42,6 +59,14 @@ class ImageAdapter(
 
         val customDateView = CustomDateView(holder.itemView.context)
         customDateView.setDateAndImages(currentDate, paths, imageWidth)
+
+
+        customDateView.setOnItemClickListener(object : CustomDateView.OnItemClickListener {
+            override fun onItemClick(imageData: ImageData) {
+                onItemClickListener?.onItemClick(imageData)
+            }
+        })
+
 
         holder.imagesContainer.addView(customDateView)
     }
@@ -84,5 +109,7 @@ class ImageAdapter(
         val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
         return dateFormat.format(Date(timestamp))
     }
+
+
 }
 

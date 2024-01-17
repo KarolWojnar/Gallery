@@ -74,5 +74,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation("androidx.biometric:biometric-ktx:1.2.0-alpha05")
+    implementation ("com.google.android.exoplayer:exoplayer-core:2.15.0")
+    implementation ("com.google.android.exoplayer:exoplayer-ui:2.15.0")
 
 }

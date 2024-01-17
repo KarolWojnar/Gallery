@@ -1,0 +1,92 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Górny obszar -->
+    <LinearLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="#323131"
+        android:orientation="vertical">
+
+        <!-- Tytuł -->
+        <TextView
+            android:id="@+id/imagePreviewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="serif"
+            android:lineSpacingExtra="8sp"
+            android:text="Podgląd"
+            android:textAlignment="center"
+            android:textColor="#CCCCCC"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+    </LinearLayout>
+
+    <!-- Środkowy obszar -->
+    <ImageView
+        android:id="@+id/imagePreview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:background="#EB181B23"
+        android:padding="8dp"/>
+
+    <!-- Dolny obszar -->
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#323131"
+        android:orientation="horizontal">
+
+        <!-- Przyciski -->
+        <Button
+            android:id="@+id/backBtn_id"
+            style="@android:style/DeviceDefault.Light.ButtonBar.AlertDialog"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="serif"
+            android:lineSpacingExtra="8sp"
+            android:text="Wróć"
+            android:textColor="#CCCCCC"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+
+        <Button
+            android:id="@+id/deleteBtn_id"
+            style="@android:style/DeviceDefault.ButtonBar.AlertDialog"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="serif"
+            android:lineSpacingExtra="8sp"
+            android:text="Usuń"
+            android:textColor="#CCCCCC"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+
+        <Button
+            android:id="@+id/toPrivateBtn_id"
+            style="@android:style/DeviceDefault.ButtonBar.AlertDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="serif"
+            android:lineSpacingExtra="8sp"
+            android:text="Dodaj do prywatnych"
+            android:textColor="#CCCCCC"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+
+    </LinearLayout>
+
+</LinearLayout>
