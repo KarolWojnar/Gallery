@@ -23,6 +23,7 @@ class ImageAdapter(
 ) : RecyclerView.Adapter<ImageAdapter.DateViewHolder>() {
 
     private val dateHeaderFormatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+    private val uniquePaths = mutableListOf<String>()
 
     class DateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val dateText: TextView = itemView.findViewById(R.id.dateText)
@@ -67,9 +68,9 @@ class ImageAdapter(
                 onItemClickListener?.onItemClick(mediaData)
             }
         })
-
-
         holder.imagesContainer.addView(customDateView)
+
+        uniquePaths.addAll(paths.filter { !uniquePaths.contains(it) })
     }
 
     override fun getItemCount(): Int {
@@ -88,11 +89,12 @@ class ImageAdapter(
         return imagePaths + videoPaths
     }
 
-
     private fun findUniqueDates(imagesList: List<ImageData>, videosList: List<VideoData>): List<String> {
         val uniqueDatesList = mutableListOf<String>()
         for (imageData in imagesList) {
             val formattedDate = formatDate(imageData.imageDate)
+            if (imageData.imageIsPrivate)
+                println("ImagePath: ${imageData.imagePath}, ImageDate: ${formatDate(imageData.imageDate)}")
             if (!uniqueDatesList.contains(formattedDate)) {
                 uniqueDatesList.add(formattedDate)
             }

@@ -65,7 +65,7 @@ class CustomDateView(context: Context, attrs: AttributeSet? = null) : LinearLayo
                 imagesContainer.addView(imageView)
                 imageView.setOnClickListener {
                     // Po kliknięciu na obraz przekazujemy informacje do nasłuchiwacza
-                    showImagePreview(ImageData(path, 0)) // Uwaga: Brak daty w tym przykładzie
+                    showImagePreview(ImageData(path, 0, false)) // Uwaga: Brak daty w tym przykładzie
                 }
             }
             else if (path.endsWith(".mp4")) {
@@ -88,7 +88,7 @@ class CustomDateView(context: Context, attrs: AttributeSet? = null) : LinearLayo
                 imagesContainer.addView(imageView)
 
                 imageView.setOnClickListener {
-                    showImagePreview(VideoData(path, 0))
+                    showImagePreview(VideoData(path, 0, false))
                 }
             }
         }

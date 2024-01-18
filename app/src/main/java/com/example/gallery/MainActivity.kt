@@ -58,8 +58,10 @@ class MainActivity : ComponentActivity() {
 
                 if (mediaData is ImageData) {
                     intent.putExtra("imagePath", mediaData.imagePath)
+                    intent.putExtra("imageDate", mediaData.date)
                 } else if (mediaData is VideoData) {
                     intent.putExtra("videoPath", mediaData.videoPath)
+                    intent.putExtra("videoDate", mediaData.date)
                 }
                 startActivity(intent)
             }
@@ -68,8 +70,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_layout)
-
-
 
         val aparatButton = findViewById<Button>(R.id.aparat_id)
         aparatButton.setOnClickListener {
@@ -104,8 +104,10 @@ class MainActivity : ComponentActivity() {
 
                 if (mediaData is ImageData) {
                     intent.putExtra("imagePath", mediaData.imagePath)
+                    intent.putExtra("imageDate", mediaData.imageDate)
                 } else if (mediaData is VideoData) {
                     intent.putExtra("videoPath", mediaData.videoPath)
+                    intent.putExtra("videoDate", mediaData.videoDate)
                 }
                 startActivity(intent)
             }
@@ -184,15 +186,19 @@ class MainActivity : ComponentActivity() {
                 val imageDate = it.getLong(columnIndexDate)
 
                 if (imagePath != null) {
-                    fileList.add(ImageData(imagePath, imageDate, false))
+                    val isPrivate = ImageData.loadImagePrivacy(this, imagePath)
+                    if (!isPrivate) {
+                        fileList.add(ImageData(imagePath, imageDate, false))
+                    }
                 }
             }
         }
 
         cursor?.close()
 
-        return fileList.filter { !it.imageIsPrivate }
+        return fileList
     }
+
     private fun getAllVideosData(): List<VideoData> {
         val fileList: ArrayList<VideoData> = ArrayList()
 
@@ -213,11 +219,14 @@ class MainActivity : ComponentActivity() {
                 val videoDate = it.getLong(columnIndexDate)
 
                 if (videoPath != null) {
-                    fileList.add(VideoData(videoPath, videoDate, false))
+                    val isPrivate = VideoData.loadVideoPrivacy(this, videoPath)
+                    if (!isPrivate) {
+                        fileList.add(VideoData(videoPath, videoDate, false))
+                    }
                 }
             }
         }
         cursor?.close()
-        return fileList.filter { !it.videoIsPrivate }
+        return fileList
     }
 }

@@ -13,8 +13,6 @@ import java.io.File
 
 class ImagePreviewActivity : AppCompatActivity() {
 
-    private var isVideoPaused = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_preview)
@@ -77,9 +75,22 @@ class ImagePreviewActivity : AppCompatActivity() {
         }
 
         addToPrivateButton.setOnClickListener {
-            val mediaPath = imagePath ?: videoPath
-            if (mediaPath != null) {
-                //moveMediaToPrivate(mediaPath)
+            if (videoPath != null) {
+                val videoMedia = VideoData.getVideoDataByPath(videoPath)
+                if (videoMedia != null) {
+                    videoMedia.videoIsPrivate = true
+                    VideoData.saveVideoPrivacy(this, videoPath, true)
+                    Toast.makeText(this, "Film został dodany do prywatnych!", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
+            } else if (imagePath != null) {
+                val imageMedia = ImageData.getImageDataByPath(imagePath)
+                if (imageMedia != null) {
+                    imageMedia.imageIsPrivate = true
+                    ImageData.saveImagePrivacy(this, imagePath, true)
+                    Toast.makeText(this, "Zdjęcie zostało dodane do prywatnych!", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
             }
         }
     }
