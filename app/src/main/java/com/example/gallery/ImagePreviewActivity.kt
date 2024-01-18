@@ -13,6 +13,8 @@ import java.io.File
 
 class ImagePreviewActivity : AppCompatActivity() {
 
+    private var isVideoPaused = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_preview)
