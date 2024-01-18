@@ -18,9 +18,8 @@ class ImagePreviewActivity : AppCompatActivity() {
         setContentView(R.layout.activity_image_preview)
 
         val imagePath = intent.getStringExtra("imagePath")
-        val imageDate = intent.getStringExtra("imageDate")
         val videoPath = intent.getStringExtra("videoPath")
-        val videoDate = intent.getStringExtra("videoDate")
+
 
         val imageView = findViewById<ImageView>(R.id.imagePreview)
         val videoView = findViewById<VideoView>(R.id.videoView)
@@ -43,11 +42,9 @@ class ImagePreviewActivity : AppCompatActivity() {
             videoView.start()
         }
 
-        //TODO: ZROBIĆ PAUZOWANIE
-
         // Obsługa przycisków
         backButton.setOnClickListener {
-            finish() // Zamknięcie aktywności podglądu
+            finish()
         }
 
         deleteButton.setOnClickListener {
@@ -69,12 +66,22 @@ class ImagePreviewActivity : AppCompatActivity() {
         }
 
         addToPrivateButton.setOnClickListener {
-            val mediaPath = imagePath ?: videoPath
-            val mediaData = imageDate ?: videoDate
-            if (mediaPath != null) {
-                val mediaData = MediaData(mediaPath.toString(), mediaData?.toLong() ?: 0, false)
-                mediaData.isPrivate = true
-                startActivity(Intent(this, MainActivity::class.java))
+            if (videoPath != null) {
+                val videoMedia = VideoData.getVideoDataByPath(videoPath)
+                if (videoMedia != null) {
+                    videoMedia.videoIsPrivate = true
+                    VideoData.saveVideoPrivacy(this, videoPath, true)
+                    Toast.makeText(this, "Film został dodany do prywatnych!", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
+            } else if (imagePath != null) {
+                val imageMedia = ImageData.getImageDataByPath(imagePath)
+                if (imageMedia != null) {
+                    imageMedia.imageIsPrivate = true
+                    ImageData.saveImagePrivacy(this, imagePath, true)
+                    Toast.makeText(this, "Zdjęcie zostało dodane do prywatnych!", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
             }
         }
     }

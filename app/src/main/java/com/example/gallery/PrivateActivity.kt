@@ -34,7 +34,6 @@ class PrivateActivity : ComponentActivity() {
     private val CHANNEL_ID = "MyNotificationChannel"
     private val NOTIFICATION_ID = 1
 
-
     override fun onResume() {
         super.onResume()
         val recyclerView = findViewById<RecyclerView>(R.id.dateRecyclerView)
@@ -48,7 +47,6 @@ class PrivateActivity : ComponentActivity() {
 
         val margin = (displayMetrics.density * 4).toInt()
 
-
         val imageAdapter = ImageAdapter(imagesList, videosList, imageWidth, margin)
         recyclerView.adapter = imageAdapter
         imageAdapter.setOnItemClickListener(object : ImageAdapter.OnItemClickListener {
@@ -57,13 +55,16 @@ class PrivateActivity : ComponentActivity() {
 
                 if (mediaData is ImageData) {
                     intent.putExtra("imagePath", mediaData.imagePath)
+                    intent.putExtra("imageDate", mediaData.date)
                 } else if (mediaData is VideoData) {
                     intent.putExtra("videoPath", mediaData.videoPath)
+                    intent.putExtra("videoDate", mediaData.date)
                 }
                 startActivity(intent)
             }
         })
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_private)
@@ -75,12 +76,11 @@ class PrivateActivity : ComponentActivity() {
             openCamera()
         }
 
-        val privateButton = findViewById<Button>(R.id.private_button_id)
-        privateButton.setOnClickListener {
-            val intent = Intent(this, SecurityActivity::class.java)
+        val mainButton = findViewById<Button>(R.id.photos_button_id)
+        mainButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
-
 
         val recyclerView = findViewById<RecyclerView>(R.id.dateRecyclerView)
         val imagesList: List<ImageData> = getAllImagesData()
@@ -101,8 +101,10 @@ class PrivateActivity : ComponentActivity() {
 
                 if (mediaData is ImageData) {
                     intent.putExtra("imagePath", mediaData.imagePath)
+                    intent.putExtra("imageDate", mediaData.imageDate)
                 } else if (mediaData is VideoData) {
                     intent.putExtra("videoPath", mediaData.videoPath)
+                    intent.putExtra("videoDate", mediaData.videoDate)
                 }
                 startActivity(intent)
             }
@@ -173,15 +175,19 @@ class PrivateActivity : ComponentActivity() {
                 val imageDate = it.getLong(columnIndexDate)
 
                 if (imagePath != null) {
-                    fileList.add(ImageData(imagePath, imageDate))
+                    val isPrivate = ImageData.loadImagePrivacy(this, imagePath)
+                    if (isPrivate) {
+                        fileList.add(ImageData(imagePath, imageDate, true))
+                    }
                 }
             }
         }
 
         cursor?.close()
 
-        return fileList.filter { it.imageIsPrivate }
+        return fileList
     }
+
     private fun getAllVideosData(): List<VideoData> {
         val fileList: ArrayList<VideoData> = ArrayList()
 
@@ -202,12 +208,14 @@ class PrivateActivity : ComponentActivity() {
                 val videoDate = it.getLong(columnIndexDate)
 
                 if (videoPath != null) {
-                    fileList.add(VideoData(videoPath, videoDate))
+                    val isPrivate = VideoData.loadVideoPrivacy(this, videoPath)
+                    if (isPrivate) {
+                        fileList.add(VideoData(videoPath, videoDate, true))
+                    }
                 }
             }
         }
         cursor?.close()
-        return fileList.filter { it.videoIsPrivate }
+        return fileList
     }
-
 }
