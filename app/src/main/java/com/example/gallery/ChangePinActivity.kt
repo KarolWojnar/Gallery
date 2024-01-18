@@ -34,19 +34,16 @@ class ChangePinActivity : AppCompatActivity() {
             val savedPin = sharedPreferences.getString("PIN", "")
 
             if (enteredCurrentPin == savedPin && enteredNewPin.length == 4) {
-                // Zmiana PIN w SharedPreferences
                 sharedPreferences.edit().putString("PIN", enteredNewPin).apply()
-                showMessage("PIN changed successfully!")
+                showMessage("PIN został zmieniony!")
                 startActivity(Intent(this, SecurityActivity::class.java))
-                // Tutaj możesz przenieść użytkownika do kolejnej aktywności lub ekranu
-                // np. startActivity(Intent(this, NextActivity::class.java))
             } else {
-                showMessage("Invalid current PIN or new PIN must be 4 digits long")
+                showMessage("Nieprawidłowy PIN")
             }
         }
 
         cancelChangePinButton.setOnClickListener {
-            finish() // Zamknij aktywność
+            finish()
         }
     }
 

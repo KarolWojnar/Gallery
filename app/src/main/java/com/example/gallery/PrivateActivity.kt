@@ -66,7 +66,7 @@ class PrivateActivity : ComponentActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_layout)
+        setContentView(R.layout.activity_private)
 
         sendNotification()
 
@@ -75,9 +75,9 @@ class PrivateActivity : ComponentActivity() {
             openCamera()
         }
 
-        val privateButton = findViewById<Button>(R.id.private_button_id)
+        val privateButton = findViewById<Button>(R.id.photos_button_id)
         privateButton.setOnClickListener {
-            val intent = Intent(this, SecurityActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 

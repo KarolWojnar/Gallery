@@ -61,9 +61,9 @@ class SecurityActivity : AppCompatActivity() {
 
     private fun showBiometricPrompt() {
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Biometric Authentication")
-            .setSubtitle("Unlock using your fingerprint")
-            .setNegativeButtonText("Cancel")
+            .setTitle("Uwierzytelnianie Biometryczne")
+            .setSubtitle("Odblokuj używając odcisku palca")
+            .setNegativeButtonText("Anuluj")
             .build()
 
         val biometricPrompt = BiometricPrompt(
@@ -71,19 +71,19 @@ class SecurityActivity : AppCompatActivity() {
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
-                    showMessage("Authentication error: $errString")
+                    showMessage("Błąd autoryzacji: $errString")
                     vibrateDevice()
                 }
 
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(result)
-                    showMessage("Authentication Succeed")
+                    showMessage("Autoryzacja udana!")
                     startActivity(Intent(this@SecurityActivity, PrivateActivity::class.java))
                 }
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    showMessage("Authentication failed.")
+                    showMessage("Błąd autoryzacji.")
                     vibrateDevice()
                 }
             })
@@ -95,14 +95,14 @@ class SecurityActivity : AppCompatActivity() {
         if (keyguardManager.isKeyguardSecure) {
             showSecureLockScreenSettings()
         } else {
-            showMessage("Device does not have a secure lock screen.")
+            showMessage("Urządzenie nie posiada ekranu blokady.")
         }
     }
 
     private fun showSecureLockScreenSettings() {
         val intent = keyguardManager.createConfirmDeviceCredentialIntent(
-            "Unlock using your phone's password",
-            "Confirm your password"
+            "Odblokuj za pomocą hasła do telefonu",
+            "Potwierdź swoje hasło"
         )
         startActivityForResult(intent, KEYGUARD_REQUEST_CODE)
     }
@@ -124,10 +124,10 @@ class SecurityActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == KEYGUARD_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                showMessage("Authentication with password succeeded!")
+                showMessage("Autoryzacja uzyskana!")
                 startActivity(Intent(this, PrivateActivity::class.java))
             } else {
-                showMessage("Authentication with password failed.")
+                showMessage("Błąd autoryzacji!")
             }
         }
     }

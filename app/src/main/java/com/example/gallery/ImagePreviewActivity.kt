@@ -13,6 +13,8 @@ import java.io.File
 
 class ImagePreviewActivity : AppCompatActivity() {
 
+    private var isVideoPaused = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_preview)
@@ -41,7 +43,15 @@ class ImagePreviewActivity : AppCompatActivity() {
             videoView.start()
         }
 
-        //TODO: ZROBIĆ PAUZOWANIE
+        videoView.setOnClickListener {
+            if (videoView.isPlaying) {
+                videoView.pause()
+                isVideoPaused = true
+            } else {
+                videoView.start()
+                isVideoPaused = false
+            }
+        }
 
         // Obsługa przycisków
         backButton.setOnClickListener {
