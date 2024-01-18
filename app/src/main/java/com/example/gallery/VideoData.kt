@@ -7,6 +7,9 @@ data class VideoData(
     val videoDate: Long,
     var videoIsPrivate: Boolean
 ): MediaData(videoPath, videoDate, videoIsPrivate) {
+
+
+
     companion object {
         // Funkcje do zarządzania danymi w SharedPreferences dla filmów
         private const val PREFS_NAME = "VideoPrefs"
