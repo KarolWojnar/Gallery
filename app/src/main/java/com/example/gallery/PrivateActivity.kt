@@ -53,6 +53,7 @@ class PrivateActivity : ComponentActivity() {
             override fun onItemClick(mediaData: MediaData) {
                 val intent = Intent(this@PrivateActivity, ImagePreviewActivity::class.java)
 
+                intent.putExtra("buttonName", "Usuń z prywatnych")
                 if (mediaData is ImageData) {
                     intent.putExtra("imagePath", mediaData.imagePath)
                     intent.putExtra("imageDate", mediaData.date)
@@ -98,7 +99,7 @@ class PrivateActivity : ComponentActivity() {
         imageAdapter.setOnItemClickListener(object : ImageAdapter.OnItemClickListener {
             override fun onItemClick(mediaData: MediaData) {
                 val intent = Intent(this@PrivateActivity, ImagePreviewActivity::class.java)
-
+                intent.putExtra("buttonName", "Usuń z prywatnych")
                 if (mediaData is ImageData) {
                     intent.putExtra("imagePath", mediaData.imagePath)
                     intent.putExtra("imageDate", mediaData.imageDate)

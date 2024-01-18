@@ -93,8 +93,6 @@ class ImageAdapter(
         val uniqueDatesList = mutableListOf<String>()
         for (imageData in imagesList) {
             val formattedDate = formatDate(imageData.imageDate)
-            if (imageData.imageIsPrivate)
-                println("ImagePath: ${imageData.imagePath}, ImageDate: ${formatDate(imageData.imageDate)}")
             if (!uniqueDatesList.contains(formattedDate)) {
                 uniqueDatesList.add(formattedDate)
             }

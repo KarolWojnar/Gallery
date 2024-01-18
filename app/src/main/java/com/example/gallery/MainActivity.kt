@@ -56,6 +56,7 @@ class MainActivity : ComponentActivity() {
             override fun onItemClick(mediaData: MediaData) {
                 val intent = Intent(this@MainActivity, ImagePreviewActivity::class.java)
 
+                intent.putExtra("buttonName", "Dodaj do prywatnych")
                 if (mediaData is ImageData) {
                     intent.putExtra("imagePath", mediaData.imagePath)
                     intent.putExtra("imageDate", mediaData.date)
@@ -102,6 +103,7 @@ class MainActivity : ComponentActivity() {
             override fun onItemClick(mediaData: MediaData) {
                 val intent = Intent(this@MainActivity, ImagePreviewActivity::class.java)
 
+                intent.putExtra("buttonName", "Dodaj do prywatnych")
                 if (mediaData is ImageData) {
                     intent.putExtra("imagePath", mediaData.imagePath)
                     intent.putExtra("imageDate", mediaData.imageDate)

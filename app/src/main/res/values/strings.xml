@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Gallery</string>
+    <string name="app_name">PhotoPro</string>
     <string name="fingerPrintBtn">Odcisk palca</string>
     <string name="passwordBtn">Hasło</string>
 </resources>

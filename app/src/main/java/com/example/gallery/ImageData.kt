@@ -8,9 +8,6 @@ data class ImageData(
     var imageIsPrivate: Boolean
 ) : MediaData(imagePath, imageDate, imageIsPrivate)
 {
-
-
-
     companion object {
         // Funkcje do zarządzania danymi w SharedPreferences dla zdjęć
         private const val PREFS_NAME = "ImagePrefs"
