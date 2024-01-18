@@ -102,8 +102,10 @@ class MainActivity : ComponentActivity() {
 
                 if (mediaData is ImageData) {
                     intent.putExtra("imagePath", mediaData.imagePath)
+                    intent.putExtra("imageDate", mediaData.date)
                 } else if (mediaData is VideoData) {
                     intent.putExtra("videoPath", mediaData.videoPath)
+                    intent.putExtra("videoDate", mediaData.date)
                 }
                 startActivity(intent)
             }

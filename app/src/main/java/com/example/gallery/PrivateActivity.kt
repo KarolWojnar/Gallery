@@ -66,7 +66,7 @@ class PrivateActivity : ComponentActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_layout)
+        setContentView(R.layout.activity_private)
 
         sendNotification()
 
@@ -173,7 +173,7 @@ class PrivateActivity : ComponentActivity() {
                 val imageDate = it.getLong(columnIndexDate)
 
                 if (imagePath != null) {
-                    fileList.add(ImageData(imagePath, imageDate, false))
+                    fileList.add(ImageData(imagePath, imageDate))
                 }
             }
         }
@@ -202,7 +202,7 @@ class PrivateActivity : ComponentActivity() {
                 val videoDate = it.getLong(columnIndexDate)
 
                 if (videoPath != null) {
-                    fileList.add(VideoData(videoPath, videoDate, false))
+                    fileList.add(VideoData(videoPath, videoDate))
                 }
             }
         }

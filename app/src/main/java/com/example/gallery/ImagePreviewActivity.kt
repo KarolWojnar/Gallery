@@ -18,7 +18,9 @@ class ImagePreviewActivity : AppCompatActivity() {
         setContentView(R.layout.activity_image_preview)
 
         val imagePath = intent.getStringExtra("imagePath")
+        val imageDate = intent.getStringExtra("imageDate")
         val videoPath = intent.getStringExtra("videoPath")
+        val videoDate = intent.getStringExtra("videoDate")
 
         val imageView = findViewById<ImageView>(R.id.imagePreview)
         val videoView = findViewById<VideoView>(R.id.videoView)
@@ -68,8 +70,11 @@ class ImagePreviewActivity : AppCompatActivity() {
 
         addToPrivateButton.setOnClickListener {
             val mediaPath = imagePath ?: videoPath
+            val mediaData = imageDate ?: videoDate
             if (mediaPath != null) {
-                //moveMediaToPrivate(mediaPath)
+                val mediaData = MediaData(mediaPath.toString(), mediaData?.toLong() ?: 0, false)
+                mediaData.isPrivate = true
+                startActivity(Intent(this, MainActivity::class.java))
             }
         }
     }

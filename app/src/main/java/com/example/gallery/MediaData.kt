@@ -1,7 +1,10 @@
 package com.example.gallery
 
-open class MediaData (
+import java.lang.reflect.Constructor
+
+open class MediaData(
     val path: String,
     val date: Long,
-    val isPrivate: Boolean
-)
+    var isPrivate: Boolean
+) {
+}
