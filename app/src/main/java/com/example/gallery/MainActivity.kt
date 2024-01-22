@@ -19,6 +19,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.database.getStringOrNull
 import androidx.recyclerview.widget.RecyclerView
 
+
 class MainActivity : ComponentActivity() {
 
     private val IMAGE_PROJECTION = arrayOf(
@@ -88,32 +89,36 @@ class MainActivity : ComponentActivity() {
         val imagesList: List<ImageData> = getAllImagesData()
         val videosList: List<VideoData> = getAllVideosData()
 
-        sendNotification(imagesList, videosList)
+        if(imagesList.isEmpty() && videosList.isEmpty()) Toast.makeText(this, "Brak multimediów do wyświetlenia", Toast.LENGTH_SHORT).show()
+        else{
+            sendNotification(imagesList, videosList)
 
-        val displayMetrics = resources.displayMetrics
-        val screenWidth = displayMetrics.widthPixels
-        val imageSizePercentage = 0.2
-        val imageWidth = (screenWidth * imageSizePercentage).toInt()
-        val margin = (displayMetrics.density * 4).toInt()
+            val displayMetrics = resources.displayMetrics
+            val screenWidth = displayMetrics.widthPixels
+            val imageSizePercentage = 0.2
+            val imageWidth = (screenWidth * imageSizePercentage).toInt()
+            val margin = (displayMetrics.density * 4).toInt()
 
-        val imageAdapter = ImageAdapter(imagesList, videosList, imageWidth, margin)
-        recyclerView.adapter = imageAdapter
+            val imageAdapter = ImageAdapter(imagesList, videosList, imageWidth, margin)
+            recyclerView.adapter = imageAdapter
 
-        imageAdapter.setOnItemClickListener(object : ImageAdapter.OnItemClickListener {
-            override fun onItemClick(mediaData: MediaData) {
-                val intent = Intent(this@MainActivity, ImagePreviewActivity::class.java)
+            imageAdapter.setOnItemClickListener(object : ImageAdapter.OnItemClickListener {
+                override fun onItemClick(mediaData: MediaData) {
+                    val intent = Intent(this@MainActivity, ImagePreviewActivity::class.java)
 
-                intent.putExtra("buttonName", "Dodaj do prywatnych")
-                if (mediaData is ImageData) {
-                    intent.putExtra("imagePath", mediaData.imagePath)
-                    intent.putExtra("imageDate", mediaData.imageDate)
-                } else if (mediaData is VideoData) {
-                    intent.putExtra("videoPath", mediaData.videoPath)
-                    intent.putExtra("videoDate", mediaData.videoDate)
+                    intent.putExtra("buttonName", "Dodaj do prywatnych")
+                    if (mediaData is ImageData) {
+                        intent.putExtra("imagePath", mediaData.imagePath)
+                        intent.putExtra("imageDate", mediaData.imageDate)
+                    } else if (mediaData is VideoData) {
+                        intent.putExtra("videoPath", mediaData.videoPath)
+                        intent.putExtra("videoDate", mediaData.videoDate)
+                    }
+                    startActivity(intent)
                 }
-                startActivity(intent)
-            }
-        })
+            })
+        }
+
     }
 
     private fun sendNotification(imagesList: List<ImageData>, videosList: List<VideoData>) {
